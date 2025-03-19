@@ -4,7 +4,7 @@
 """
 SmoothStack CLI工具
 
-管理开发环境容器，多容器服务组，网络配置和容器健康状态
+管理开发环境容器，多容器服务组，网络配置，容器健康状态和持久化存储
 """
 
 import click
@@ -15,6 +15,7 @@ from .dev_env_cmd import dev_env_cmd_group
 from .service_cmd import service_cmd_group
 from .network_cmd import network_cmd_group
 from .health_cmd import health_cmd_group
+from .storage_cmd import storage_cmd_group
 
 # 配置日志
 logger = logging.getLogger("smoothstack.container_manager.commands.cli")
@@ -32,6 +33,7 @@ cli.add_command(dev_env_cmd_group)
 cli.add_command(service_cmd_group)
 cli.add_command(network_cmd_group)
 cli.add_command(health_cmd_group)
+cli.add_command(storage_cmd_group)
 
 
 if __name__ == "__main__":
