@@ -7,8 +7,26 @@ app:
 
 # 数据库配置
 database:
-  url: "sqlite:///data/smoothstack_dev.db"
+  # 默认数据库
+  url: "sqlite:///smoothstack_dev.db"
   echo: true
+  pool_size: 5
+  max_overflow: 10
+  pool_recycle: 3600
+  
+  # 命名连接
+  connections:
+    # 测试数据库
+    test:
+      url: "sqlite:///smoothstack_test.db"
+      echo: true
+      pool_size: 2
+      
+    # 内存数据库
+    memory:
+      url: "sqlite:///:memory:"
+      echo: true
+      pool_pre_ping: false
 
 # API 配置
 api:
