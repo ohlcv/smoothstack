@@ -26,6 +26,16 @@ from .cache import (
     get_registry,
     CacheStrategy,
 )
+from .errors import (
+    DatabaseError,
+    ConnectionError,
+    QueryError,
+    ValidationError,
+    TransactionError,
+    CacheError,
+    handle_database_error,
+    safe_operation,
+)
 
 # 导入所有模型，确保模型被加载到元数据中
 from .models import *
@@ -52,4 +62,12 @@ __all__ = [
     "invalidate_model_cache",
     "get_registry",
     "CacheStrategy",
+    "DatabaseError",
+    "ConnectionError",
+    "QueryError",
+    "ValidationError",
+    "TransactionError",
+    "CacheError",
+    "handle_database_error",
+    "safe_operation",
 ]
