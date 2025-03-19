@@ -1,4 +1,12 @@
 ## 开发日志目录
 
-- [2023-04-03：开发环境容器配置改进、多容器服务编排和网络配置功能实现](2023-04-03.md)
-- [2023-04-01：Smoothstack项目启动和基础架构建立](2023-04-01.md) 
+### 2024
+- [2024-04-17: Implementing cross-container communication with multiple communication methods](2024-04-17.md)
+- [2024-04-16: Implementing file synchronization between container and host](2024-04-16.md)
+- [2024-04-14: Adding container debugging support with IDE integration](2024-04-14.md)
+- [2024-04-13: Implementing backend hot reload for Python applications](2024-04-13.md)
+- [2024-04-12: Implementing frontend hot reload with Vite HMR](2024-04-12.md)
+
+### 2023
+- [2023-04-03: Development environment container configuration improvements, multi-container service orchestration and network configuration implementation](2023-04-03.md)
+- [2023-04-01: Smoothstack project initiation and basic infrastructure establishment](2023-04-01.md) 
