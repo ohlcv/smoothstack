@@ -16,6 +16,16 @@ from .session import (
     get_current_session,
 )
 from .base import Base, BaseModel, UUIDModel
+from .query import QueryBuilder, query, SortDirection
+from .cache import (
+    ModelCache,
+    QueryCache,
+    cached_query,
+    cache_model,
+    invalidate_model_cache,
+    get_registry,
+    CacheStrategy,
+)
 
 # 导入所有模型，确保模型被加载到元数据中
 from .models import *
@@ -32,4 +42,14 @@ __all__ = [
     "Base",
     "BaseModel",
     "UUIDModel",
+    "QueryBuilder",
+    "query",
+    "SortDirection",
+    "ModelCache",
+    "QueryCache",
+    "cached_query",
+    "cache_model",
+    "invalidate_model_cache",
+    "get_registry",
+    "CacheStrategy",
 ]

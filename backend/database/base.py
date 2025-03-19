@@ -36,6 +36,9 @@ T = TypeVar("T", bound="BaseModel")
 # 通用类型变量
 K = TypeVar("K")
 
+# 引入缓存装饰器
+from .cache import cache_model
+
 
 class ModelMixin:
     """模型公共功能混入类"""
@@ -67,6 +70,7 @@ class ModelMixin:
         return name
 
     @classmethod
+    @cache_model(ttl=300)
     def get_by_id(cls: Type[M], session: Session, id_value: Any) -> Optional[M]:
         """
         通过ID获取记录
