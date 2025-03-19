@@ -4,16 +4,15 @@
 """
 容器管理系统
 
-管理Docker容器的生命周期、配置和监控
+提供Docker容器生命周期管理、日志监控、开发环境配置和多容器服务编排功能
 """
 
 from .manager import ContainerManager
+from .dev_environment_manager import DevEnvironmentManager
 
-# 导出单例实例
+# 创建单例实例
 container_manager = ContainerManager()
+dev_environment_manager = DevEnvironmentManager()
 
-# 导出公共符号
-__all__ = [
-    "container_manager",
-    "ContainerManager",
-]
+# 定义公开的符号
+__all__ = ["container_manager", "dev_environment_manager"]
