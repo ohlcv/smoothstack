@@ -3,6 +3,7 @@ Smoothstack CLI 工具主入口
 """
 
 import sys
+import os
 from typing import List, Optional
 import click
 from rich.console import Console
@@ -10,22 +11,80 @@ from rich.console import Console
 from .help import HelpManager
 from .help_cmd import help_command
 from .completion_cmd import completion
+from .log_cmd import log
+from .utils.logger import init_logging, get_logger
+from .utils.errors import cli_error_handler, ConfigError, UserError
+
+# 初始化日志
+init_logging()
+
+# 创建日志记录器
+logger = get_logger("cli")
 
 # 创建Rich控制台实例
 console = Console()
 
 
+# 全局选项装饰器
+def global_options(func):
+    """添加全局选项的装饰器"""
+    func = click.option(
+        "--verbose",
+        "-v",
+        count=True,
+        help="增加详细输出级别 (-v: 信息, -vv: 调试, -vvv: 跟踪)",
+    )(func)
+    func = click.option(
+        "--quiet", "-q", is_flag=True, help="降低输出级别，只显示警告和错误"
+    )(func)
+    func = click.option("--no-color", is_flag=True, help="禁用彩色输出")(func)
+    func = click.option("--log-file", help="指定日志文件路径")(func)
+    return func
+
+
 @click.group()
 @click.version_option(version="1.0.0")
-def cli():
+@global_options
+@click.pass_context
+def cli(ctx, verbose, quiet, no_color, log_file):
     """Smoothstack CLI 工具 - 简化全栈开发流程"""
-    pass
+    # 存储全局选项供子命令使用
+    ctx.ensure_object(dict)
+    ctx.obj["verbose"] = verbose
+    ctx.obj["quiet"] = quiet
+    ctx.obj["no_color"] = no_color
+    ctx.obj["log_file"] = log_file
+
+    # 配置日志级别
+    if verbose > 0:
+        if verbose == 1:
+            init_logging(console_level="info")
+            logger.info("启用信息级别日志")
+        elif verbose == 2:
+            init_logging(console_level="debug")
+            logger.info("启用调试级别日志")
+        else:  # verbose >= 3
+            init_logging(console_level="debug")  # Python logging没有trace级别
+            os.environ["SMOOTHSTACK_TRACE"] = "1"  # 设置环境变量表示trace级别
+            logger.info("启用跟踪级别日志")
+    elif quiet:
+        init_logging(console_level="warning")
+
+    # 禁用彩色输出
+    if no_color:
+        os.environ["NO_COLOR"] = "1"
+
+    logger.debug(
+        f"CLI启动，参数：verbose={verbose}, quiet={quiet}, no_color={no_color}, log_file={log_file}"
+    )
 
 
 @cli.command()
 @click.argument("topic", required=False)
-def help(topic: Optional[str] = None):
+@click.pass_context
+def help(ctx, topic: Optional[str] = None):
     """显示帮助信息"""
+    logger.debug(f"执行帮助命令，主题：{topic}")
     help_command([topic] if topic else [])
 
 
@@ -37,7 +96,9 @@ def help(topic: Optional[str] = None):
 @click.option("--docker/--no-docker", default=False, help="是否添加Docker支持")
 @click.option("--git/--no-git", default=True, help="是否初始化Git仓库")
 @click.option("--force", "-f", is_flag=True, help="强制覆盖已存在的目录")
+@click.pass_context
 def init(
+    ctx,
     name: Optional[str],
     template: str,
     python_version: str,
@@ -47,8 +108,11 @@ def init(
     force: bool,
 ):
     """初始化新项目"""
+    logger.debug(
+        f"执行初始化命令，参数：name={name}, template={template}, python_version={python_version}, node_version={node_version}, docker={docker}, git={git}, force={force}"
+    )
     # TODO: 实现项目初始化功能
-    console.print("[red]项目初始化功能尚未实现[/red]")
+    raise UserError("项目初始化功能尚未实现", "此功能将在后续版本中提供")
 
 
 @cli.command()
@@ -56,18 +120,24 @@ def init(
 @click.argument("value", required=False)
 @click.option("--list", "-l", is_flag=True, help="列出所有配置")
 @click.option("--unset", "-u", is_flag=True, help="删除配置项")
-def config(key: Optional[str], value: Optional[str], list: bool, unset: bool):
+@click.pass_context
+def config(ctx, key: Optional[str], value: Optional[str], list: bool, unset: bool):
     """管理配置"""
+    logger.debug(
+        f"执行配置命令，参数：key={key}, value={value}, list={list}, unset={unset}"
+    )
     # TODO: 实现配置管理功能
-    console.print("[red]配置管理功能尚未实现[/red]")
+    raise ConfigError("配置管理功能尚未实现", "此功能将在后续版本中提供")
 
 
 @cli.command()
 @click.argument("command", required=True)
 @click.option("--name", "-n", help="服务名称")
 @click.option("--detach", "-d", is_flag=True, help="后台运行")
-def service(command: str, name: Optional[str], detach: bool):
+@click.pass_context
+def service(ctx, command: str, name: Optional[str], detach: bool):
     """管理服务"""
+    logger.debug(f"执行服务命令，参数：command={command}, name={name}, detach={detach}")
     # TODO: 实现服务管理功能
     console.print("[red]服务管理功能尚未实现[/red]")
 
@@ -76,8 +146,10 @@ def service(command: str, name: Optional[str], detach: bool):
 @click.argument("type", type=click.Choice(["frontend", "backend", "all"]))
 @click.option("--watch", "-w", is_flag=True, help="监视模式")
 @click.option("--coverage", "-c", is_flag=True, help="生成覆盖率报告")
-def test(type: str, watch: bool, coverage: bool):
+@click.pass_context
+def test(ctx, type: str, watch: bool, coverage: bool):
     """运行测试"""
+    logger.debug(f"执行测试命令，参数：type={type}, watch={watch}, coverage={coverage}")
     # TODO: 实现测试功能
     console.print("[red]测试功能尚未实现[/red]")
 
@@ -85,8 +157,10 @@ def test(type: str, watch: bool, coverage: bool):
 @cli.command()
 @click.argument("type", type=click.Choice(["frontend", "backend", "all"]))
 @click.option("--fix", "-f", is_flag=True, help="自动修复问题")
-def lint(type: str, fix: bool):
+@click.pass_context
+def lint(ctx, type: str, fix: bool):
     """代码检查"""
+    logger.debug(f"执行代码检查命令，参数：type={type}, fix={fix}")
     # TODO: 实现代码检查功能
     console.print("[red]代码检查功能尚未实现[/red]")
 
@@ -95,8 +169,10 @@ def lint(type: str, fix: bool):
 @click.argument("type", type=click.Choice(["frontend", "backend", "all"]))
 @click.option("--mode", default="development", help="构建模式")
 @click.option("--output", "-o", help="输出目录")
-def build(type: str, mode: str, output: Optional[str]):
+@click.pass_context
+def build(ctx, type: str, mode: str, output: Optional[str]):
     """构建项目"""
+    logger.debug(f"执行构建命令，参数：type={type}, mode={mode}, output={output}")
     # TODO: 实现项目构建功能
     console.print("[red]项目构建功能尚未实现[/red]")
 
@@ -105,22 +181,24 @@ def build(type: str, mode: str, output: Optional[str]):
 @click.argument("type", type=click.Choice(["frontend", "backend", "all"]))
 @click.option("--port", "-p", help="端口号")
 @click.option("--host", "-h", help="主机地址")
-def dev(type: str, port: Optional[str], host: Optional[str]):
+@click.pass_context
+def dev(ctx, type: str, port: Optional[str], host: Optional[str]):
     """启动开发服务器"""
+    logger.debug(f"执行开发服务器命令，参数：type={type}, port={port}, host={host}")
     # TODO: 实现开发服务器功能
     console.print("[red]开发服务器功能尚未实现[/red]")
 
 
+# 添加子命令
 cli.add_command(completion)
+cli.add_command(log)
 
 
+@cli_error_handler
 def main():
     """CLI工具入口函数"""
-    try:
-        cli()
-    except Exception as e:
-        console.print(f"[red]错误: {str(e)}[/red]")
-        sys.exit(1)
+    logger.debug("CLI工具启动")
+    cli()  # 使用装饰器处理异常
 
 
 if __name__ == "__main__":
