@@ -14,6 +14,7 @@ from .completion_cmd import completion
 from .log_cmd import log
 from .interactive_cmd import interactive
 from .version_cmd import version
+from .config_cmd import config
 from .utils.logger import init_logging, get_logger
 from .utils.errors import cli_error_handler, ConfigError, UserError
 from .utils.version import check_for_updates
@@ -266,6 +267,7 @@ cli.add_command(completion)
 cli.add_command(log)
 cli.add_command(interactive)
 cli.add_command(version)
+cli.add_command(config)
 
 
 @cli_error_handler

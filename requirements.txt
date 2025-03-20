@@ -1,7 +1,7 @@
 # 基础依赖
 pydantic>=2.6.1
 python-dotenv>=1.0.0
-PyYAML>=6.0.1
+PyYAML>=6.0
 watchdog>=3.0.0
 
 # 数据库
@@ -40,4 +40,7 @@ pytest-cov>=4.1.0  # 测试覆盖率
 black>=24.2.0  # 代码格式化
 isort>=5.13.2  # import语句排序
 pylint>=3.0.3  # 代码静态检查
-mypy>=1.8.0  # 类型检查 
+mypy>=1.8.0  # 类型检查
+
+# 配置管理
+toml>=0.10.2 
