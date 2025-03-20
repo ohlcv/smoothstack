@@ -12,6 +12,7 @@ from .help import HelpManager
 from .help_cmd import help_command
 from .completion_cmd import completion
 from .log_cmd import log
+from .interactive_cmd import interactive
 from .utils.logger import init_logging, get_logger
 from .utils.errors import cli_error_handler, ConfigError, UserError
 
@@ -39,6 +40,9 @@ def global_options(func):
     )(func)
     func = click.option("--no-color", is_flag=True, help="禁用彩色输出")(func)
     func = click.option("--log-file", help="指定日志文件路径")(func)
+    func = click.option("--interactive", "-i", is_flag=True, help="启动交互式模式")(
+        func
+    )
     return func
 
 
@@ -46,7 +50,7 @@ def global_options(func):
 @click.version_option(version="1.0.0")
 @global_options
 @click.pass_context
-def cli(ctx, verbose, quiet, no_color, log_file):
+def cli(ctx, verbose, quiet, no_color, log_file, interactive):
     """Smoothstack CLI 工具 - 简化全栈开发流程"""
     # 存储全局选项供子命令使用
     ctx.ensure_object(dict)
@@ -54,6 +58,7 @@ def cli(ctx, verbose, quiet, no_color, log_file):
     ctx.obj["quiet"] = quiet
     ctx.obj["no_color"] = no_color
     ctx.obj["log_file"] = log_file
+    ctx.obj["interactive"] = interactive
 
     # 配置日志级别
     if verbose > 0:
@@ -75,8 +80,16 @@ def cli(ctx, verbose, quiet, no_color, log_file):
         os.environ["NO_COLOR"] = "1"
 
     logger.debug(
-        f"CLI启动，参数：verbose={verbose}, quiet={quiet}, no_color={no_color}, log_file={log_file}"
+        f"CLI启动，参数：verbose={verbose}, quiet={quiet}, no_color={no_color}, log_file={log_file}, interactive={interactive}"
     )
+
+    # 如果指定了交互式模式，启动交互式命令界面
+    if interactive:
+        from .interactive_cmd import InteractiveCommandRunner
+
+        runner = InteractiveCommandRunner(cli)
+        runner.run()
+        ctx.exit()
 
 
 @cli.command()
@@ -192,6 +205,7 @@ def dev(ctx, type: str, port: Optional[str], host: Optional[str]):
 # 添加子命令
 cli.add_command(completion)
 cli.add_command(log)
+cli.add_command(interactive)
 
 
 @cli_error_handler
