@@ -21,101 +21,95 @@ console = Console(stderr=True)
 
 
 class SmoothstackError(Exception):
-    """
-    Smoothstack基础异常类
-    """
+    """Smoothstack错误基类"""
 
-    # 错误代码
     error_code = "E000"
-    # 错误消息
-    message = "发生了未知错误"
-    # 错误严重程度
-    severity = "error"
-    # 退出码
-    exit_code = 1
-    # 是否显示堆栈跟踪
-    show_traceback = False
-    # 是否记录到日志
-    log_error = True
+    message = "未知错误"
 
-    def __init__(
-        self,
-        message: Optional[str] = None,
-        details: Optional[str] = None,
-        cause: Optional[Exception] = None,
-        exit_code: Optional[int] = None,
-    ):
+    def __init__(self, message: Optional[str] = None, details: Optional[str] = None):
         """
-        初始化异常
+        初始化Smoothstack错误
 
         Args:
-            message: 错误消息，覆盖默认消息
-            details: 错误的详细信息
-            cause: 导致此错误的原始异常
-            exit_code: 程序退出码
+            message: 错误消息，如果为None则使用类定义的消息
+            details: 错误详情
         """
+        self.custom_message = message
         self.details = details
-        self.cause = cause
-        if exit_code is not None:
-            self.exit_code = exit_code
+        super().__init__(self.get_message())
 
-        super().__init__(message or self.message)
+    def get_message(self) -> str:
+        """获取错误消息"""
+        if self.custom_message:
+            return self.custom_message
+        return self.message
+
+    def get_details(self) -> Optional[str]:
+        """获取错误详情"""
+        return self.details
+
+    def get_error_code(self) -> str:
+        """获取错误代码"""
+        return self.error_code
 
     def __str__(self) -> str:
-        """返回错误消息"""
-        return self.args[0] if self.args else self.message
-
-    def get_traceback(self) -> Optional[Traceback]:
-        """获取格式化的堆栈跟踪"""
-        if not self.show_traceback:
-            return None
-
-        if self.cause:
-            # 返回原始异常的堆栈跟踪
-            return Traceback.from_exception(
-                type(self.cause),
-                self.cause,
-                traceback=None,  # 让Rich自动提取堆栈跟踪
-            )
-
-        # 返回当前异常的堆栈跟踪
-        return Traceback.from_exception(
-            type(self),
-            self,
-            traceback=None,  # 让Rich自动提取堆栈跟踪
-        )
-
-    def log(self) -> None:
-        """将错误记录到日志"""
-        if not self.log_error:
-            return
-
-        error_msg = str(self)
+        """返回错误字符串表示"""
+        msg = f"{self.get_message()} [错误代码: {self.get_error_code()}]"
         if self.details:
-            error_msg += f" - {self.details}"
-
-        log_fn = getattr(logger, self.severity, logger.error)
-        log_fn(f"错误 {self.error_code}: {error_msg}")
-
-        if self.cause:
-            logger.debug(f"原始异常: {self.cause!r}")
-            if hasattr(self.cause, "__traceback__") and self.cause.__traceback__:
-                tb_str = "".join(traceback.format_tb(self.cause.__traceback__))
-                logger.debug(f"原始异常堆栈跟踪:\n{tb_str}")
+            msg += f"\n详情: {self.details}"
+        return msg
 
 
-class ConfigError(SmoothstackError):
-    """配置错误"""
+class UserError(SmoothstackError):
+    """用户错误，表示用户操作引起的错误"""
 
-    error_code = "E100"
-    message = "配置错误"
+    error_code = "E001"
+    message = "用户操作错误"
 
 
-class CommandError(SmoothstackError):
-    """命令执行错误"""
+class ConfigError(UserError):
+    """配置错误，表示配置相关的用户错误"""
 
-    error_code = "E200"
-    message = "命令执行错误"
+    pass
+
+
+class CommandError(UserError):
+    """命令错误，表示命令执行过程中的用户错误"""
+
+    pass
+
+
+class NetworkError(UserError):
+    """网络错误，表示网络连接或请求相关的错误"""
+
+    pass
+
+
+class FileError(UserError):
+    """文件错误，表示文件操作相关的用户错误"""
+
+    pass
+
+
+class InputError(SmoothstackError):
+    """输入错误"""
+
+    error_code = "E300"
+    message = "输入错误"
+
+
+class ValidationError(SmoothstackError):
+    """验证错误"""
+
+    error_code = "E400"
+    message = "验证错误"
+
+
+class FileSystemError(SmoothstackError):
+    """文件系统错误"""
+
+    error_code = "E500"
+    message = "文件系统错误"
 
 
 class DependencyError(SmoothstackError):
@@ -130,29 +124,6 @@ class ContainerError(SmoothstackError):
 
     error_code = "E400"
     message = "容器管理错误"
-
-
-class FileSystemError(SmoothstackError):
-    """文件系统错误"""
-
-    error_code = "E500"
-    message = "文件系统错误"
-
-
-class NetworkError(SmoothstackError):
-    """网络错误"""
-
-    error_code = "E600"
-    message = "网络错误"
-
-
-class UserError(SmoothstackError):
-    """用户错误，通常是用户输入问题"""
-
-    error_code = "E700"
-    message = "输入错误"
-    severity = "warning"
-    show_traceback = False
 
 
 class InternalError(SmoothstackError):

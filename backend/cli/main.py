@@ -13,8 +13,10 @@ from .help_cmd import help_command
 from .completion_cmd import completion
 from .log_cmd import log
 from .interactive_cmd import interactive
+from .version_cmd import version
 from .utils.logger import init_logging, get_logger
 from .utils.errors import cli_error_handler, ConfigError, UserError
+from .utils.version import check_for_updates
 
 # 初始化日志
 init_logging()
@@ -24,6 +26,9 @@ logger = get_logger("cli")
 
 # 创建Rich控制台实例
 console = Console()
+
+# 自动检查更新的间隔（天）
+AUTO_CHECK_INTERVAL = 7
 
 
 # 全局选项装饰器
@@ -43,6 +48,9 @@ def global_options(func):
     func = click.option("--interactive", "-i", is_flag=True, help="启动交互式模式")(
         func
     )
+    func = click.option("--no-update-check", is_flag=True, help="禁用自动更新检查")(
+        func
+    )
     return func
 
 
@@ -50,7 +58,7 @@ def global_options(func):
 @click.version_option(version="1.0.0")
 @global_options
 @click.pass_context
-def cli(ctx, verbose, quiet, no_color, log_file, interactive):
+def cli(ctx, verbose, quiet, no_color, log_file, interactive, no_update_check):
     """Smoothstack CLI 工具 - 简化全栈开发流程"""
     # 存储全局选项供子命令使用
     ctx.ensure_object(dict)
@@ -59,6 +67,7 @@ def cli(ctx, verbose, quiet, no_color, log_file, interactive):
     ctx.obj["no_color"] = no_color
     ctx.obj["log_file"] = log_file
     ctx.obj["interactive"] = interactive
+    ctx.obj["no_update_check"] = no_update_check
 
     # 配置日志级别
     if verbose > 0:
@@ -80,8 +89,13 @@ def cli(ctx, verbose, quiet, no_color, log_file, interactive):
         os.environ["NO_COLOR"] = "1"
 
     logger.debug(
-        f"CLI启动，参数：verbose={verbose}, quiet={quiet}, no_color={no_color}, log_file={log_file}, interactive={interactive}"
+        f"CLI启动，参数：verbose={verbose}, quiet={quiet}, no_color={no_color}, log_file={log_file}, "
+        f"interactive={interactive}, no_update_check={no_update_check}"
     )
+
+    # 自动检查更新（非静默模式），除非明确禁用
+    if not no_update_check and not quiet:
+        _auto_check_update()
 
     # 如果指定了交互式模式，启动交互式命令界面
     if interactive:
@@ -90,6 +104,51 @@ def cli(ctx, verbose, quiet, no_color, log_file, interactive):
         runner = InteractiveCommandRunner(cli)
         runner.run()
         ctx.exit()
+
+
+def _auto_check_update():
+    """自动检查更新（如果距离上次检查超过指定天数）"""
+    try:
+        from datetime import datetime, timedelta
+        import json
+        from pathlib import Path
+
+        # 检查更新状态文件
+        home_dir = Path.home()
+        ss_dir = home_dir / ".smoothstack"
+        ss_dir.mkdir(exist_ok=True)
+        last_check_file = ss_dir / ".last_update_check"
+
+        # 确定是否需要检查
+        need_check = True
+        if last_check_file.exists():
+            try:
+                data = json.loads(last_check_file.read_text(encoding="utf-8"))
+                last_check = datetime.fromisoformat(data.get("timestamp", ""))
+                if datetime.now() - last_check < timedelta(days=AUTO_CHECK_INTERVAL):
+                    need_check = False
+            except Exception as e:
+                logger.debug(f"读取上次更新检查记录失败: {e}")
+
+        # 执行检查
+        if need_check:
+            logger.debug("执行自动更新检查")
+            has_update, _ = check_for_updates(show_current=False)
+
+            # 更新检查时间
+            last_check_file.write_text(
+                json.dumps({"timestamp": datetime.now().isoformat()}), encoding="utf-8"
+            )
+
+            # 如果有更新，显示提示
+            if has_update:
+                console.print(
+                    "\n[yellow]发现新版本可用！使用 'smoothstack version check' 查看详情。[/yellow]\n"
+                )
+
+    except Exception as e:
+        # 自动更新检查失败不应影响正常使用
+        logger.debug(f"自动更新检查失败: {e}")
 
 
 @cli.command()
@@ -206,6 +265,7 @@ def dev(ctx, type: str, port: Optional[str], host: Optional[str]):
 cli.add_command(completion)
 cli.add_command(log)
 cli.add_command(interactive)
+cli.add_command(version)
 
 
 @cli_error_handler
