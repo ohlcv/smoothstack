@@ -9,6 +9,7 @@ from rich.console import Console
 
 from .help import HelpManager
 from .help_cmd import help_command
+from .completion_cmd import completion
 
 # 创建Rich控制台实例
 console = Console()
@@ -108,6 +109,9 @@ def dev(type: str, port: Optional[str], host: Optional[str]):
     """启动开发服务器"""
     # TODO: 实现开发服务器功能
     console.print("[red]开发服务器功能尚未实现[/red]")
+
+
+cli.add_command(completion)
 
 
 def main():
