@@ -2,6 +2,8 @@
 版本更新检查工具模块，提供CLI工具版本检查和更新通知
 """
 
+__version__ = "1.0.0"  # 统一版本定义（自动同步到各子系统）
+
 import re
 import os
 import sys
@@ -31,8 +33,8 @@ logger = get_logger("version")
 # 创建控制台实例
 console = Console()
 
-# 当前版本
-CURRENT_VERSION = "1.0.0"
+# 当前版本（从模块变量获取）
+
 
 # 版本检查URL
 VERSION_CHECK_URL = (
@@ -205,7 +207,7 @@ def _http_get(url: str, timeout: int = 10) -> Optional[Dict[str, Any]]:
     logger.debug(f"发送HTTP请求: {url}")
 
     headers = {
-        "User-Agent": f"SmoothstackCLI/{CURRENT_VERSION} ({platform.system()} {platform.version()})"
+        "User-Agent": f"SmoothstackCLI/{__version__} ({platform.system()} {platform.version()})"
     }
 
     try:
@@ -297,7 +299,7 @@ def check_for_updates(
     """
     try:
         # 获取当前版本
-        current_version = Version(CURRENT_VERSION)
+        current_version = Version(__version__)
 
         # 从缓存读取版本信息（如果不是强制检查）
         if not force:
@@ -350,7 +352,7 @@ def display_update_info(version_info: Dict[str, Any], has_update: bool) -> None:
     table.add_column("项目", style="cyan")
     table.add_column("内容", style="green")
 
-    table.add_row("当前版本", CURRENT_VERSION)
+    table.add_row("当前版本", __version__)
     table.add_row("最新版本", version_info.get("version", "未知"))
     table.add_row("发布时间", published_str)
     table.add_row("发布名称", version_info.get("name", ""))
@@ -374,4 +376,4 @@ def display_update_info(version_info: Dict[str, Any], has_update: bool) -> None:
             )
         )
     else:
-        console.print(Panel(f"当前已是最新版本 {CURRENT_VERSION}", style="bold blue"))
+        console.print(Panel(f"当前已是最新版本 {__version__}", style="bold blue"))

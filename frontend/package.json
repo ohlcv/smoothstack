@@ -1,6 +1,6 @@
 {
     "name": "smoothstack-frontend",
-    "version": "0.1.0",
+    "version": "<%= process.env.APP_VERSION %>",
     "private": true,
     "description": "Smoothstack 现代化全栈应用开发框架前端",
     "scripts": {

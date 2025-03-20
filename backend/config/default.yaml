@@ -1,7 +1,7 @@
 # 应用基本配置
 app:
   name: "smoothstack"
-  version: "0.1.0"
+  version: {{ __version__ }}  # 自动从version.py导入
   debug: false
   log_level: "INFO"
 
@@ -108,4 +108,4 @@ performance:
   minify: true
   cache_control: true
   etag: true
-  gzip: true 
+  gzip: true

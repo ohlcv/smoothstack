@@ -56,7 +56,7 @@ def global_options(func):
 
 
 @click.group()
-@click.version_option(version="1.0.0")
+@click.version_option(version=__version__)
 @global_options
 @click.pass_context
 def cli(ctx, verbose, quiet, no_color, log_file, interactive, no_update_check):
