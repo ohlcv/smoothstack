@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="120" viewBox="0 0 400 120" fill="none">
+  <!-- 箭头路径 -->
+  <path d="M40,60 L360,60" stroke="#E4E7EB" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- 阶段1：安装 -->
+  <g transform="translate(20, 60)">
+    <circle cx="0" cy="0" r="20" fill="#00B2C8"/>
+    <text x="0" y="5" font-family="Arial" font-size="12" font-weight="bold" fill="white" text-anchor="middle">1</text>
+  </g>
+  
+  <!-- 阶段2：配置 -->
+  <g transform="translate(120, 60)">
+    <circle cx="0" cy="0" r="20" fill="#00B2C8"/>
+    <text x="0" y="5" font-family="Arial" font-size="12" font-weight="bold" fill="white" text-anchor="middle">2</text>
+  </g>
+  
+  <!-- 阶段3：开发 -->
+  <g transform="translate(220, 60)">
+    <circle cx="0" cy="0" r="20" fill="#00B2C8"/>
+    <text x="0" y="5" font-family="Arial" font-size="12" font-weight="bold" fill="white" text-anchor="middle">3</text>
+  </g>
+  
+  <!-- 阶段4：部署 -->
+  <g transform="translate(320, 60)">
+    <circle cx="0" cy="0" r="20" fill="#00B2C8"/>
+    <text x="0" y="5" font-family="Arial" font-size="12" font-weight="bold" fill="white" text-anchor="middle">4</text>
+  </g>
+  
+  <!-- 标签 -->
+  <g text-anchor="middle" font-family="Arial" font-size="14" fill="#4F566B">
+    <text x="20" y="100">安装</text>
+    <text x="120" y="100">配置</text>
+    <text x="220" y="100">开发</text>
+    <text x="320" y="100">部署</text>
+  </g>
+  
+  <!-- 小箭头 - 反向 -->
+  <g fill="#00B2C8">
+    <path d="M100,60 L90,55 L90,65 Z"/>
+    <path d="M200,60 L190,55 L190,65 Z"/>
+    <path d="M300,60 L290,55 L290,65 Z"/>
+  </g>
+</svg> 

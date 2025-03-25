@@ -1,0 +1,64 @@
+# 生产环境特定配置
+
+# 应用配置
+app:
+  debug: false
+  log_level: "INFO"
+
+# 数据库配置
+database:
+  url: "postgresql://user:password@localhost:5432/smoothstack"
+  pool_size: 20
+  max_overflow: 30
+  echo: false
+
+# API 配置
+api:
+  debug: false
+  cors_origins: ["https://smoothstack.example.com"]
+  rate_limit: 100
+
+# 日志配置
+logging:
+  level: "INFO"
+  file: "/var/log/smoothstack/smoothstack.log"
+  max_size: 104857600  # 100MB
+  backup_count: 10
+
+# 安全配置
+security:
+  secret_key: "${SECRET_KEY}"  # 从环境变量获取
+  allowed_hosts: ["smoothstack.example.com"]
+
+# 缓存配置
+cache:
+  type: "redis"
+  ttl: 3600  # 1小时
+
+# 任务队列配置
+celery:
+  broker_url: "redis://redis:6379/0"
+  result_backend: "redis://redis:6379/0"
+  worker_concurrency: 4
+  max_tasks_per_child: 1000
+
+# 监控配置
+monitoring:
+  enabled: true
+  metrics_port: 9090
+  health_check_interval: 30
+
+# 性能优化配置
+performance:
+  compression: true
+  minify: true
+  cache_control: true
+  etag: true
+  gzip: true
+
+# 开发工具配置
+dev_tools:
+  debug_toolbar: false
+  profiler: false
+  test_coverage: false
+  hot_reload: false 

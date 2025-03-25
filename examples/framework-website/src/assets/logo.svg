@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆形 -->
+  <circle cx="64" cy="64" r="60" fill="#1890FF" opacity="0.1"/>
+  
+  <!-- 主要图形 -->
+  <path d="M40 64C40 50.7452 50.7452 40 64 40C77.2548 40 88 50.7452 88 64C88 77.2548 77.2548 88 64 88"
+    stroke="#1890FF" 
+    stroke-width="8" 
+    stroke-linecap="round"
+  />
+  
+  <!-- 装饰线条 -->
+  <path d="M64 88C64 88 45 88 40 93C35 98 35 108 35 108"
+    stroke="#722ED1" 
+    stroke-width="8" 
+    stroke-linecap="round"
+  />
+  
+  <!-- 点缀 -->
+  <circle cx="64" cy="40" r="4" fill="#722ED1"/>
+  <circle cx="35" cy="108" r="4" fill="#1890FF"/>
+</svg> 

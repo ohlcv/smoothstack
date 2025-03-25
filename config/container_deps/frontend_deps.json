@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "dependencies": {},
+    "devDependencies": {}
+  },
+  "prod": {
+    "dependencies": {},
+    "devDependencies": {}
+  }
+}

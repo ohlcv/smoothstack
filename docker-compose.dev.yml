@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app:delegated
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - smoothstack-network
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    command: sh -c "npm install && npm run dev"
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile.dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app:delegated
+      - backend-venv:/app/venv
+    environment:
+      - ENVIRONMENT=development
+      - PYTHONUNBUFFERED=1
+      - PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
+    networks:
+      - smoothstack-network
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+networks:
+  smoothstack-network:
+    driver: bridge
+
+volumes:
+  backend-venv: 

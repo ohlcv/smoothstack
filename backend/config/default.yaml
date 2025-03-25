@@ -1,0 +1,111 @@
+# 应用基本配置
+app:
+  name: "smoothstack"
+  version: "0.1.0" # 固定版本号替代模板变量
+  debug: false
+  log_level: "INFO"
+
+# 数据库配置
+database:
+  url: "sqlite:///data/smoothstack.db"
+  pool_size: 5
+  max_overflow: 10
+  echo: false
+
+# API 配置
+api:
+  host: "0.0.0.0"
+  port: 5000
+  debug: false
+  cors_origins: ["*"]
+  rate_limit: 100 # 每分钟请求限制
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/smoothstack.log"
+  max_size: 10485760 # 10MB
+  backup_count: 5
+
+# 安全配置
+security:
+  secret_key: "your-secret-key-here-12345678" # 长度至少16个字符
+  token_expire: 3600 # 1小时
+  password_hash_algorithm: "bcrypt"
+  allowed_hosts: ["*"]
+
+# 缓存配置
+cache:
+  type: "memory" # 可选: memory, redis
+  ttl: 300 # 5分钟
+  max_size: 1000 # 最大缓存条目数
+
+# 任务队列配置
+celery:
+  broker_url: "redis://localhost:6379/0"
+  result_backend: "redis://localhost:6379/0"
+  task_serializer: "json"
+  result_serializer: "json"
+  accept_content: ["json"]
+  timezone: "UTC"
+  enable_utc: true
+
+# 监控配置
+monitoring:
+  enabled: false
+  metrics_port: 9090
+  health_check_interval: 60 # 秒
+
+# 国际化配置
+i18n:
+  default_locale: "zh_CN"
+  fallback_locale: "en_US"
+  supported_locales: ["zh_CN", "en_US"]
+  load_path: "locales"
+
+# 文件上传配置
+upload:
+  max_size: 5242880 # 5MB
+  allowed_extensions: ["jpg", "jpeg", "png", "gif", "pdf"]
+  upload_dir: "uploads"
+  temp_dir: "temp"
+
+# 邮件配置
+email:
+  smtp_host: "smtp.example.com"
+  smtp_port: 587
+  smtp_user: ""
+  smtp_password: ""
+  use_tls: true
+  default_from: "noreply@example.com"
+
+# 第三方服务配置
+services:
+  redis:
+    host: "localhost"
+    port: 6379
+    db: 0
+    password: null
+    ssl: false
+
+  elasticsearch:
+    hosts: ["http://localhost:9200"]
+    timeout: 30
+    retry_on_timeout: true
+    max_retries: 3
+
+# 开发工具配置
+dev_tools:
+  debug_toolbar: false
+  profiler: false
+  test_coverage: false
+  hot_reload: true
+
+# 性能优化配置
+performance:
+  compression: true
+  minify: true
+  cache_control: true
+  etag: true
+  gzip: true

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+    <!-- 背景 -->
+    <rect width="800" height="600" fill="#F8F9FA"/>
+    
+    <!-- 标题 -->
+    <text x="400" y="50" text-anchor="middle" font-size="24" font-weight="bold" fill="#212529">Smoothstack 系统架构</text>
+    
+    <!-- 前端容器 -->
+    <g transform="translate(100,150)">
+        <rect width="200" height="120" rx="10" fill="#4361EE" opacity="0.9"/>
+        <text x="100" y="40" text-anchor="middle" fill="white" font-size="16">前端 (Vue.js)</text>
+        <text x="100" y="70" text-anchor="middle" fill="white" font-size="14">- Vite</text>
+        <text x="100" y="90" text-anchor="middle" fill="white" font-size="14">- TypeScript</text>
+        <text x="100" y="110" text-anchor="middle" fill="white" font-size="14">- Ant Design Vue</text>
+    </g>
+    
+    <!-- 后端容器 -->
+    <g transform="translate(500,150)">
+        <rect width="200" height="120" rx="10" fill="#3F37C9" opacity="0.9"/>
+        <text x="100" y="40" text-anchor="middle" fill="white" font-size="16">后端 (FastAPI)</text>
+        <text x="100" y="70" text-anchor="middle" fill="white" font-size="14">- Python</text>
+        <text x="100" y="90" text-anchor="middle" fill="white" font-size="14">- Uvicorn</text>
+        <text x="100" y="110" text-anchor="middle" fill="white" font-size="14">- SQLAlchemy</text>
+    </g>
+    
+    <!-- 数据库容器 -->
+    <g transform="translate(300,350)">
+        <rect width="200" height="100" rx="10" fill="#4895EF" opacity="0.9"/>
+        <text x="100" y="40" text-anchor="middle" fill="white" font-size="16">数据库</text>
+        <text x="100" y="70" text-anchor="middle" fill="white" font-size="14">PostgreSQL</text>
+    </g>
+    
+    <!-- 连接线 -->
+    <g stroke="#212529" stroke-width="2">
+        <!-- 前端到后端 -->
+        <line x1="300" y1="210" x2="500" y2="210" stroke-dasharray="5,5"/>
+        <text x="400" y="200" text-anchor="middle" font-size="12">HTTP/REST</text>
+        
+        <!-- 后端到数据库 -->
+        <line x1="600" y1="270" x2="400" y2="350" stroke-dasharray="5,5"/>
+        <text x="520" y="320" text-anchor="middle" font-size="12">SQL</text>
+    </g>
+    
+    <!-- Docker 容器标识 -->
+    <g transform="translate(50,500)">
+        <rect width="700" height="40" rx="5" fill="#212529" opacity="0.1"/>
+        <text x="350" y="25" text-anchor="middle" font-size="14">Docker 容器化环境</text>
+    </g>
+</svg> 

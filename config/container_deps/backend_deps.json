@@ -1,0 +1,18 @@
+{
+  "dev": {
+    "python_packages": {
+      "fastapi": "",
+      "django": "",
+      "djangorestframework": "",
+      "django-environ": "",
+      "django-cors-headers": ""
+    },
+    "system_packages": [
+      "git"
+    ]
+  },
+  "prod": {
+    "python_packages": {},
+    "system_packages": []
+  }
+}

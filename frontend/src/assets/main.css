@@ -1,0 +1,393 @@
+/* Reset and base styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.2;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+button {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-1 {
+    margin-top: 0.25rem;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.mt-5 {
+    margin-top: 2rem;
+}
+
+.mb-1 {
+    margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.mb-5 {
+    margin-bottom: 2rem;
+}
+
+.ml-1 {
+    margin-left: 0.25rem;
+}
+
+.ml-2 {
+    margin-left: 0.5rem;
+}
+
+.ml-3 {
+    margin-left: 1rem;
+}
+
+.ml-4 {
+    margin-left: 1.5rem;
+}
+
+.ml-5 {
+    margin-left: 2rem;
+}
+
+.mr-1 {
+    margin-right: 0.25rem;
+}
+
+.mr-2 {
+    margin-right: 0.5rem;
+}
+
+.mr-3 {
+    margin-right: 1rem;
+}
+
+.mr-4 {
+    margin-right: 1.5rem;
+}
+
+.mr-5 {
+    margin-right: 2rem;
+}
+
+/* Modern Color Palette */
+:root {
+    /* Primary Brand Colors */
+    --primary: #0066CC;
+    --primary-light: #4D94FF;
+    --primary-dark: #004C99;
+
+    /* 颜色层级变量 - 适配App.vue */
+    --color-primary-50: #e6f2ff;
+    --color-primary-100: #cce5ff;
+    --color-primary-200: #99cbff;
+    --color-primary-300: #66b0ff;
+    --color-primary-400: #3394ff;
+    --color-primary-500: #0066CC;
+    --color-primary-600: #0052a3;
+    --color-primary-700: #003d7a;
+    --color-primary-800: #002952;
+    --color-primary-900: #001429;
+
+    /* 次要颜色 */
+    --color-secondary-50: #fff1f1;
+    --color-secondary-100: #ffe4e4;
+    --color-secondary-200: #fecaca;
+    --color-secondary-300: #fca5a5;
+    --color-secondary-400: #f87171;
+    --color-secondary-500: #ef4444;
+    --color-secondary-600: #dc2626;
+    --color-secondary-700: #b91c1c;
+    --color-secondary-800: #991b1b;
+    --color-secondary-900: #7f1d1d;
+
+    /* 强调色 - 改为蓝绿色系 */
+    --color-accent-50: #ecfdff;
+    --color-accent-100: #cff9ff;
+    --color-accent-200: #a5f0fa;
+    --color-accent-300: #67e3f9;
+    --color-accent-400: #22d1ed;
+    --color-accent-500: #00B2C8;
+    --color-accent-600: #0090a3;
+    --color-accent-700: #007385;
+    --color-accent-800: #00575f;
+    --color-accent-900: #003b40;
+
+    /* 成功色 */
+    --color-success-50: #ecfdf5;
+    --color-success-100: #d1fae5;
+    --color-success-200: #a7f3d0;
+    --color-success-300: #6ee7b7;
+    --color-success-400: #34d399;
+    --color-success-500: #10b981;
+    --color-success-600: #059669;
+    --color-success-700: #047857;
+    --color-success-800: #065f46;
+    --color-success-900: #064e3b;
+
+    /*中性色*/
+    --color-neutral-50: #fafafa;
+    --color-neutral-100: #f5f5f5;
+    --color-neutral-200: #e5e5e5;
+    --color-neutral-300: #d4d4d4;
+    --color-neutral-400: #a3a3a3;
+    --color-neutral-500: #737373;
+    --color-neutral-600: #525252;
+    --color-neutral-700: #404040;
+    --color-neutral-800: #262626;
+    --color-neutral-900: #171717;
+
+    /* Supporting Colors */
+    --secondary: #ff7b73;
+    --secondary-light: #ffaba5;
+    --secondary-dark: #e86056;
+
+    /* Accents - 改为科技感更强的颜色 */
+    --accent-1: #00B2C8;
+    --accent-2: #008394;
+    --accent-3: #00D5F2;
+
+    /* UI Status Colors */
+    --success: #06d6a0;
+    --error: #ef476f;
+    --warning: #ffd166;
+    --info: #118ab2;
+
+    /* Neutrals */
+    --light: #f8f9fa;
+    --light-100: #f1f3f5;
+    --light-200: #e9ecef;
+    --light-300: #dee2e6;
+
+    --dark: #212529;
+    --dark-100: #343a40;
+    --dark-200: #495057;
+    --dark-300: #6c757d;
+
+    --white: #ffffff;
+
+    /* Functional */
+    --bg-primary: var(--white);
+    --bg-secondary: var(--light);
+    --bg-tertiary: var(--light-100);
+
+    --text-primary: var(--dark-100);
+    --text-secondary: var(--dark-300);
+    --text-tertiary: var(--dark-200);
+    --text-inverse: var(--white);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Utility Classes */
+.shadow-sm {
+    box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+    box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+    box-shadow: var(--shadow-lg);
+}
+
+.radius-sm {
+    border-radius: var(--radius-sm);
+}
+
+.radius-md {
+    border-radius: var(--radius-md);
+}
+
+.radius-lg {
+    border-radius: var(--radius-lg);
+}
+
+.radius-xl {
+    border-radius: var(--radius-xl);
+}
+
+.radius-full {
+    border-radius: var(--radius-full);
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary), var(--accent-1));
+}
+
+.bg-gradient-secondary {
+    background: linear-gradient(135deg, var(--secondary), var(--accent-3));
+}
+
+.text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.text-primary {
+    color: var(--primary);
+}
+
+.text-secondary {
+    color: var(--secondary);
+}
+
+.bg-primary-color {
+    background-color: var(--primary);
+}
+
+.bg-secondary-color {
+    background-color: var(--secondary);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-slideUp {
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.75rem;
+    }
+}

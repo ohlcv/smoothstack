@@ -1,0 +1,52 @@
+groups:
+  - name: development_alerts
+    rules:
+      # CPU 使用率告警
+      - alert: HighCPUUsage
+        expr: container_cpu_usage_seconds_total{container_name=~"backend|frontend"} > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "Container {{ $labels.container_name }} CPU usage is above 80%"
+
+      # 内存使用率告警
+      - alert: HighMemoryUsage
+        expr: container_memory_usage_bytes{container_name=~"backend|frontend"} / container_spec_memory_limit_bytes{container_name=~"backend|frontend"} > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Container {{ $labels.container_name }} memory usage is above 80%"
+
+      # 响应时间告警
+      - alert: HighResponseTime
+        expr: rate(http_requests_duration_seconds_sum[5m]) / rate(http_requests_duration_seconds_count[5m]) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time detected"
+          description: "Average response time is above 1 second"
+
+      # 错误率告警
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is above 5%"
+
+      # 容器重启告警
+      - alert: ContainerRestart
+        expr: changes(container_start_time_seconds{container_name=~"backend|frontend"}[5m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Container restarted"
+          description: "Container {{ $labels.container_name }} has restarted" 

@@ -1,0 +1,64 @@
+# 开发环境特定配置
+
+# 应用配置
+app:
+  debug: true
+  log_level: "DEBUG"
+
+# 数据库配置
+database:
+  # 默认数据库
+  url: "sqlite:///smoothstack_dev.db"
+  echo: true
+  pool_size: 5
+  max_overflow: 10
+  pool_recycle: 3600
+
+  # 命名连接
+  connections:
+    # 测试数据库
+    test:
+      url: "sqlite:///smoothstack_test.db"
+      echo: true
+      pool_size: 2
+
+    # 内存数据库
+    memory:
+      url: "sqlite:///:memory:"
+      echo: true
+      pool_pre_ping: false
+
+# API 配置
+api:
+  debug: true
+  rate_limit: 1000 # 开发环境放宽限制
+
+# 日志配置
+logging:
+  level: "DEBUG"
+  file: "logs/smoothstack_dev.log"
+
+# 安全配置
+security:
+  secret_key: "dev-secret-key-123456789abc"
+  allowed_hosts: ["*"]
+
+# 缓存配置
+cache:
+  type: "memory"
+  ttl: 60 # 开发环境缩短缓存时间
+
+# 开发工具配置
+dev_tools:
+  debug_toolbar: true
+  profiler: true
+  test_coverage: true
+  hot_reload: true
+
+# 性能优化配置
+performance:
+  compression: false
+  minify: false
+  cache_control: false
+  etag: false
+  gzip: false

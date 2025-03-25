@@ -1,0 +1,70 @@
+## 数据库配置模式
+
+# 默认数据库连接URL
+url:
+  type: string
+  default: "sqlite:///smoothstack.db"
+  description: "默认数据库连接URL"
+  example: "sqlite:///app.db"
+
+# 是否开启SQL语句输出
+echo:
+  type: boolean
+  default: false
+  description: "是否开启SQL语句输出"
+
+# 连接池配置
+pool_size:
+  type: integer
+  default: 5
+  minimum: 1
+  maximum: 100
+  description: "数据库连接池大小"
+  
+max_overflow:
+  type: integer
+  default: 10
+  minimum: 0
+  maximum: 100
+  description: "连接池最大溢出连接数"
+  
+pool_timeout:
+  type: integer
+  default: 30
+  minimum: 1
+  maximum: 600
+  description: "连接池获取连接超时时间（秒）"
+  
+pool_recycle:
+  type: integer
+  default: 1800
+  minimum: 60
+  maximum: 86400
+  description: "连接池回收时间（秒）"
+  
+pool_pre_ping:
+  type: boolean
+  default: true
+  description: "是否在使用前测试连接"
+
+# 多连接配置
+connections:
+  type: object
+  description: "命名数据库连接"
+  default: {}
+  properties:
+    # 配置示例
+    example:
+      type: object
+      properties:
+        url:
+          type: string
+          description: "数据库连接URL"
+        echo:
+          type: boolean
+          default: false
+          description: "是否开启SQL语句输出"
+        pool_size:
+          type: integer
+          default: 5
+          description: "连接池大小" 

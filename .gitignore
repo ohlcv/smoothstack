@@ -1,0 +1,77 @@
+# 依赖目录
+node_modules/
+.pnp
+.pnp.js
+
+# 日志
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 构建输出
+dist/
+dist-ssr/
+coverage/
+*.local
+
+# 编辑器目录和文件
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 虚拟环境
+venv/
+ENV/
+.venv/
+
+# 本地配置文件
+.gitconfig
+.ssh/
+
+# 临时文件和工具
+cleanup_cursor_cache.bat
+python-codebase-analyzer-optimized.py
+tmp/
+
+# 其他
+.DS_Store
+Thumbs.db 

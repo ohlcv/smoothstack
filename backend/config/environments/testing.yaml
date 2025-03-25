@@ -1,0 +1,56 @@
+# 测试环境特定配置
+
+# 应用配置
+app:
+  debug: true
+  log_level: "DEBUG"
+
+# 数据库配置
+database:
+  url: "sqlite:///data/smoothstack_test.db"
+  echo: false
+
+# API 配置
+api:
+  debug: true
+  rate_limit: 1000  # 测试环境放宽限制
+
+# 日志配置
+logging:
+  level: "DEBUG"
+  file: "logs/smoothstack_test.log"
+
+# 安全配置
+security:
+  secret_key: "test-secret-key"
+  allowed_hosts: ["*"]
+
+# 缓存配置
+cache:
+  type: "memory"
+  ttl: 60  # 测试环境缩短缓存时间
+
+# 任务队列配置
+celery:
+  broker_url: "memory://"
+  result_backend: "cache+memory://"
+
+# 监控配置
+monitoring:
+  enabled: false
+  metrics_port: 9091  # 使用不同的端口避免冲突
+
+# 开发工具配置
+dev_tools:
+  debug_toolbar: false
+  profiler: false
+  test_coverage: true
+  hot_reload: false
+
+# 性能优化配置
+performance:
+  compression: false
+  minify: false
+  cache_control: false
+  etag: false
+  gzip: false 
