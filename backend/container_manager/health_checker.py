@@ -190,7 +190,7 @@ class NotificationConfig:
         notify_on_status_change: bool = True,
         notify_on_warning: bool = True,
         notify_on_critical: bool = True,
-        notification_interval: int = 300,  # 5分钟
+        notification_interval: int = 300,  # 10分钟
         notification_handlers: List[str] = None,
     ):
         """

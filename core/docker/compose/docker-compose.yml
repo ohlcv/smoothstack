@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - http_proxy=http://127.0.0.1:8890
+      - https_proxy=http://127.0.0.1:8890
+      - NPM_CONFIG_REGISTRY=https://registry.npmmirror.com
+    depends_on:
+      - backend
+    networks:
+      - smoothstack-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - ENV=development
+      - DATABASE_URL=sqlite:///app.db
+      - http_proxy=http://127.0.0.1:8890
+      - https_proxy=http://127.0.0.1:8890
+      - PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+    networks:
+      - smoothstack-network
+  # Add additional services as needed (e.g., database, cache, etc.)
+
+networks:
+  smoothstack-network:
+    driver: bridge

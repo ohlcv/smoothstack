@@ -38,7 +38,7 @@ security:
 # 缓存配置
 cache:
   type: "memory" # 可选: memory, redis
-  ttl: 300 # 5分钟
+  ttl: 300 # 10分钟
   max_size: 1000 # 最大缓存条目数
 
 # 任务队列配置

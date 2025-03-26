@@ -41,6 +41,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 文档目录配置
+DOCS_DIR = Path(__file__).parent.parent / "docs"
+
+
+# 文档路由
+@app.get("/docs")
+async def list_docs():
+    """列出所有文档"""
+    docs = []
+    for file in DOCS_DIR.rglob("*.md"):
+        relative_path = file.relative_to(DOCS_DIR)
+        with open(file, "r", encoding="utf-8") as f:
+            content = f.read()
+            title_match = next(
+                (line for line in content.split("\n") if line.startswith("# ")), None
+            )
+            title = title_match[2:] if title_match else relative_path.stem
+        docs.append(
+            {
+                "path": str(relative_path).replace("\\", "/").replace(".md", ""),
+                "title": title,
+            }
+        )
+    return docs
+
+
+@app.get("/docs/{path:path}")
+async def get_doc(path: str):
+    """获取指定文档的内容"""
+    file_path = DOCS_DIR / f"{path}.md"
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="Document not found")
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    return {"content": content}
+
 
 # Health Check
 @app.get("/health")
